@@ -1,0 +1,77 @@
+﻿@model currencyConvertor.Models.currencyList
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+    <form asp-action="post" onsubmit="return validateFields()">
+        <h1>Currency Convertor</h1><hr/>
+        
+    <label for="fromCurrency">Select Currency You want to Convert From</label>
+   
+    @Html.DropDownList("fromCurrency", Model.ListofCurrency," ", new { @class = "form-control" } )
+
+    <label for="toCurrency">Select Currency You want to Convert To</label>
+   
+    @Html.DropDownList("toCurrency", Model.ListofCurrency,"", new { @class = "form-control" } )
+
+    <label for="amount">Enter Amount to Convert</label>
+   @Html.TextBox("amount", Model.conversionAmount, new { @class = "form-control" })
+   <span asp-validation-for="conversionAmount" class="text-danger visually-hidden" id="amtValid">Please Enter Amount</span>  
+
+   <label for="convDate">Select Date for History Conversion</label>
+   @Html.TextBox("convDate", Model.conversionDate, new { @class = "form-control" })
+
+   <button type="submit" class="btn btn-success" asp-action="check">Convert</button>
+    </form>
+
+    
+    
+
+   @section Scripts
+{
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script>
+function validateFields() {
+   
+    var amt = $("#amount").val();
+    if(amt==""){
+        $("#amtValid").removeClass("visually-hidden");
+        return false;
+    }else{
+        $("#amtValid").addClass("visually-hidden");
+        return true;
+    }
+
+}
+
+        $(function () {
+            
+            $("#convDate").datepicker({
+                dateFormat: "yy-mm-dd",
+                defaultDate: -1,
+               maxDate:'-1d',
+                changemonth: true,
+                changeyear: true,
+                beforeShow: function(i) { if ($(i).attr('readonly')) { return true; } }
+            }).attr('readonly','readonly');
+        });
+    </script>
+}
+   <form>    
+    <table style="width: 100%; margin-bottom: 25px">
+        <tr>
+            <td>
+                
+            </td>
+            
+        </tr>
+    </table>
+
+</form>
+
+   
+       <h4>@TempData["convertedValue"]</h4> 
+
+
